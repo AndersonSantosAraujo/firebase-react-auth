@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Card, Alert } from "react-bootstrap";
+import { Button, Card, Alert, Badge, Image } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -19,6 +19,8 @@ const Dashboard = () => {
     }
   };
 
+  console.log("🚀", currentUser);
+
   return (
     <>
       <Card>
@@ -29,8 +31,43 @@ const Dashboard = () => {
               {error}
             </Alert>
           )}
-          <strong>Email:</strong>
-          {currentUser && currentUser.email}
+
+          <div className="d-flex justify-content-center mb-5">
+            {currentUser.photoURL ? (
+              <Image
+                height={96}
+                width={96}
+                src={currentUser.photoURL}
+                roundedCircle
+              />
+            ) : (
+              <div
+                style={{
+                  height: "96px",
+                  width: "96px",
+                  background: "#888",
+                  borderRadius: "50%",
+                }}
+              ></div>
+            )}
+          </div>
+
+          <div>
+            <span style={{ marginRight: "10px" }}>
+              Hello dear,{" "}
+              {currentUser.displayName ? currentUser.displayName : "..."}
+            </span>
+          </div>
+
+          <div>
+            <strong>Your Email: </strong>
+            {currentUser?.email}
+          </div>
+
+          <div>
+            <strong>Account: </strong>
+            <Badge bg="success">Verify</Badge>
+          </div>
 
           <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
             Update profile

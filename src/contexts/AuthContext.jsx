@@ -9,8 +9,10 @@ import {
   updatePassword,
   GoogleAuthProvider,
   signInWithPopup,
+  sendEmailVerification,
 } from "firebase/auth";
 import { auth } from "../services/firebase";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -21,6 +23,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscriber = onAuthStateChanged(auth, (user) => {
@@ -39,20 +42,24 @@ export const AuthProvider = ({ children }) => {
   const signup = async (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        //
+        sendEmailVerification(auth.currentUser)
+          .then(() => {
+            navigate("/verify-email");
+          })
+          .catch((err) => alert(err.message));
       })
       .catch((error) => {
-        console.log("Error: ", error.code, " - ", error.message);
+        throw error;
       });
   };
 
   const login = async (email, password) => {
-    const signin = signInWithEmailAndPassword(auth, email, password)
+    return signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        //
+        setCurrentUser(userCredential.user);
       })
       .catch((error) => {
-        console.log("Error: ", error.code, " - ", error.message);
+        throw error;
       });
   };
 
@@ -62,7 +69,7 @@ export const AuthProvider = ({ children }) => {
         //
       })
       .catch((error) => {
-        console.log("Error: ", error.code, " - ", error.message);
+        throw error;
       });
   };
 
@@ -72,7 +79,7 @@ export const AuthProvider = ({ children }) => {
         //
       })
       .catch((error) => {
-        console.log("Error: ", error.code, " - ", error.message);
+        throw error;
       });
   };
 
@@ -82,7 +89,7 @@ export const AuthProvider = ({ children }) => {
         //
       })
       .catch((error) => {
-        console.log("Error: ", error.code, " - ", error.message);
+        throw error;
       });
   };
 
@@ -92,7 +99,7 @@ export const AuthProvider = ({ children }) => {
         //
       })
       .catch((error) => {
-        console.log("Error: ", error.code, " - ", error.message);
+        throw error;
       });
   };
 
@@ -104,7 +111,23 @@ export const AuthProvider = ({ children }) => {
         //
       })
       .catch((error) => {
-        console.log("Error: ", error.code, " - ", error.message);
+        throw error;
+      });
+  };
+
+  const resendEmailVerification = async () => {
+    return sendEmailVerification(auth.currentUser)
+      .then(() => {
+        const timeout = setTimeout(() => {
+          navigate("../login");
+        }, 5000);
+
+        return () => {
+          clearTimeout(timeout);
+        };
+      })
+      .catch((error) => {
+        throw error;
       });
   };
 
@@ -117,6 +140,7 @@ export const AuthProvider = ({ children }) => {
     updateEmail_,
     updatePassword_,
     loginWithGoogle,
+    resendEmailVerification,
   };
 
   return (

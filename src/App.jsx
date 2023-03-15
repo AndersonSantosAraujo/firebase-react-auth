@@ -4,11 +4,12 @@ import Dashboard from "./components/Dashboard";
 import Login from "./components/Login";
 import ForgotPassword from "./components/ForgotPassword";
 import UpdateProfile from "./components/UpdateProfile";
+import VerifyEmail from "./components/VerifyEmail";
+import NotFound from "./components/NotFound";
+import PrivateRoute from "./components/helper/PrivateRoute";
 import { Container } from "react-bootstrap";
 import { AuthProvider } from "./contexts/AuthContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import PrivateRoute from "./components/helper/PrivateRoute";
-import NotFound from "./components/NotFound";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
               <Route path="*" element={<NotFound />} />
               <Route exact path="/" element={<PrivateRoute />}>
                 <Route path="/" element={<Dashboard />} />
