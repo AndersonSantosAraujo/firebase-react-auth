@@ -19,7 +19,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
         setCurrentUser(user);
         setLoading(false);
       } else {
-        setCurrentUser();
+        setCurrentUser(null);
         setLoading(false);
       }
     });
