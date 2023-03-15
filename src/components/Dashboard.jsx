@@ -19,8 +19,6 @@ const Dashboard = () => {
     }
   };
 
-  console.log("🚀", currentUser);
-
   return (
     <>
       <Card>
