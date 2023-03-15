@@ -7,8 +7,10 @@ import {
   sendPasswordResetEmail,
   updateEmail,
   updatePassword,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth } from "../services/firebase";
 
 const AuthContext = createContext();
 
@@ -94,6 +96,18 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
+  const loginWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+
+    return signInWithPopup(auth, provider)
+      .then((result) => {
+        //
+      })
+      .catch((error) => {
+        console.log("Error: ", error.code, " - ", error.message);
+      });
+  };
+
   const value = {
     currentUser,
     signup,
@@ -102,6 +116,7 @@ export const AuthProvider = ({ children }) => {
     resetPassword,
     updateEmail_,
     updatePassword_,
+    loginWithGoogle,
   };
 
   return (

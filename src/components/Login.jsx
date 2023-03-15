@@ -2,11 +2,12 @@ import { useRef, useState } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import googleIcon from "../assets/googleIcon.svg";
 
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -21,6 +22,21 @@ const Login = () => {
       navigate("/");
     } catch (error) {
       setError("Failed to sign in");
+    }
+
+    setLoading(false);
+  };
+
+  const handleGoogleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      setError("");
+      setLoading(true);
+      await loginWithGoogle();
+      navigate("/");
+    } catch (error) {
+      setError("Failed to sign in with Google");
     }
 
     setLoading(false);
@@ -48,9 +64,23 @@ const Login = () => {
             </Form.Group>
 
             <Button disabled={loading} className="w-100 mt-4" type="submit">
-              Log In
+              LogIn
             </Button>
           </Form>
+
+          <Button
+            disabled={loading}
+            className="w-100 mt-4 d-flex align-items-center justify-content-center"
+            onClick={handleGoogleLogin}
+            variant="light"
+          >
+            <img
+              src={googleIcon}
+              alt="Google Icon"
+              style={{ width: "30px", marginRight: "20px" }}
+            />
+            LogIn With Google
+          </Button>
 
           <div className="w-100 text-center mt-3">
             <Link to="/forgot-password">Forgot Password</Link>
@@ -58,7 +88,7 @@ const Login = () => {
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        Need an account? <Link to="/signup">Sign Up</Link>
+        Need an account? <Link to="/signup">SignUp</Link>
       </div>
     </>
   );

@@ -8,6 +8,7 @@ import { Container } from "react-bootstrap";
 import { AuthProvider } from "./contexts/AuthContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./components/helper/PrivateRoute";
+import NotFound from "./components/NotFound";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="*" element={<NotFound />} />
               <Route exact path="/" element={<PrivateRoute />}>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/update-profile" element={<UpdateProfile />} />

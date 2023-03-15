@@ -58,13 +58,13 @@ const Signup = () => {
             </Form.Group>
 
             <Button disabled={loading} className="w-100 mt-4" type="submit">
-              Sign Up
+              SignUp
             </Button>
           </Form>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        Already have an account? <Link to="/login">Log In</Link>
+        Already have an account? <Link to="/login">LogIn</Link>
       </div>
     </>
   );
